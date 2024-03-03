@@ -1,0 +1,56 @@
+- name: Ensure .ssh directory exists
+  ansible.builtin.file:
+    path: "{{ dest_key | dirname }}"
+    mode: 0700
+    state: directory
+  tags:
+    - ssh
+- name: Copy SSH private key
+  ansible.builtin.copy:
+    src: "{{ source_key }}"
+    dest: "{{ dest_key }}"
+    mode: 0600
+  tags:
+    - ssh
+- name: Copy SSH public key
+  ansible.builtin.copy:
+    src: "{{ source_key }}.pub"
+    dest: "{{ dest_key }}.pub"
+    mode: 0644
+  tags:
+    - ssh
+- name: Setup Git global email
+  community.general.git_config:
+    name: user.email
+    scope: global
+    value: "anandrajaram21@gmail.com"
+  tags:
+    - git
+- name: Setup Git global name
+  community.general.git_config:
+    name: user.name
+    scope: global
+    value: "Anand Rajaram"
+  tags:
+    - git
+- name: Sign all git commits by default
+  community.general.git_config:
+    name: commit.gpgsign
+    scope: global
+    value: "true"
+  tags:
+    - git
+- name: Setup commit signing format to ssh
+  community.general.git_config:
+    name: gpg.format
+    scope: global
+    value: "ssh"
+  tags:
+    - git
+- name: Set user commit signing key
+  community.general.git_config:
+    name: user.signingkey
+    scope: global
+    value: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519.pub"
+  tags:
+    - git
