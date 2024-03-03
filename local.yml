@@ -1,0 +1,14 @@
+- hosts: localhost
+  pre_tasks:
+    - name: Update dnf
+      become: true
+      ansible.builtin.dnf:
+        update_cache: true
+        state: present
+      tags:
+        - base
+  tasks:
+    - name: Include list of tasks
+      ansible.builtin.include_tasks:
+        file: tasks/base.yml
+

@@ -1,0 +1,9 @@
+- name: Install core packages for base functionality
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - git
+      - g++
+      - python3-pip
+  tags:
+    - base
