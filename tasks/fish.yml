@@ -1,0 +1,12 @@
+- name: Install fish shell
+  become: true
+  ansible.builtin.dnf:
+    name: fish
+  tags:
+    - fish
+- name: Set fish as default shell
+  become: true
+  ansible.builtin.shell:
+    cmd: "chsh -s /usr/bin/fish"
+  tags:
+    - fish
